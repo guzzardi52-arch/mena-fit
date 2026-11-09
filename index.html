@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2b1024">
+<title>Mena Fit</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mena Fit">
+<style>
+:root{--bg:#0c0e11;--card:#161a20;--card2:#1e242c;--ink:#f2f4f7;--mute:#8d98a7;--acc:#ff5c9d;--acc2:#ffb347;--ok:#ff5c9d;--line:#262d37}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:92px}
+header{background:linear-gradient(135deg,#0c0e11 0%,#2b1024 100%);padding:16px 16px 14px;position:sticky;top:0;z-index:5;border-bottom:2px solid var(--acc)}
+header h1{margin:0;font:900 22px/1 Impact,"Arial Narrow",system-ui,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--acc)}
+header small{color:var(--mute);font-size:12px;letter-spacing:.5px;text-transform:uppercase}
+main{max-width:640px;margin:0 auto;padding:12px}
+.card{background:var(--card);border-radius:16px;padding:14px;margin-bottom:12px;border:1px solid var(--line)}
+.hero{background:linear-gradient(160deg,#33142a,#161a20 70%);border-color:#6b2750}
+.row{display:flex;align-items:center;gap:10px}.sp{flex:1}
+button{font:inherit;border:0;border-radius:12px;padding:11px 14px;background:var(--acc);color:#fff;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;font-size:13px}
+button:active{transform:scale(.97)}
+button.sec{background:var(--card2);color:var(--ink);border:1px solid var(--line)}
+button.ok{background:var(--acc);color:#fff}
+button.warn{background:transparent;color:var(--acc2);border:1px solid var(--acc2)}
+button.big{width:100%;padding:16px;font-size:17px;letter-spacing:1.5px;font-family:Impact,"Arial Narrow",system-ui,sans-serif;font-weight:400;box-shadow:0 0 22px rgba(255,92,157,.3)}
+nav{position:fixed;bottom:0;left:0;right:0;background:#0f1216;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:6}
+nav button{flex:1;background:none;color:var(--mute);border-radius:0;padding:14px 4px;font-size:12px;border:0;border-top:3px solid transparent}
+nav button.on{color:var(--acc);border-top-color:var(--acc)}
+.imgs{display:flex;gap:6px;margin:10px 0}
+.imgs img{width:calc(50% - 3px);border-radius:12px;background:var(--card2);aspect-ratio:4/3;object-fit:cover;filter:contrast(1.05) saturate(.9)}
+.tag{display:inline-block;background:var(--card2);border:1px solid var(--line);border-radius:20px;padding:3px 10px;font-size:12px;color:var(--acc);margin-right:4px;font-weight:700}
+.mute{color:var(--mute);font-size:13px}
+h2{font:400 24px/1.1 Impact,"Arial Narrow",system-ui,sans-serif;letter-spacing:1px;text-transform:uppercase;margin:2px 0 6px}
+h3{font:400 18px/1.15 Impact,"Arial Narrow",system-ui,sans-serif;letter-spacing:.8px;text-transform:uppercase;margin:0}
+.num{background:var(--acc);color:#fff;font:400 18px/1 Impact,system-ui,sans-serif;min-width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.set{display:grid;grid-template-columns:28px 1fr 1fr 48px;gap:8px;align-items:center;margin:7px 0}
+.set input{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font:700 17px system-ui;text-align:center;background:var(--card2);color:var(--ink)}
+.set input::placeholder{color:#566170;font-weight:400}
+.set .chk{width:48px;height:44px;border-radius:12px;background:var(--card2);color:var(--mute);padding:0;font-size:20px;border:1px solid var(--line)}
+.set.done .chk{background:var(--acc);color:#fff;border-color:var(--acc)}
+.set.done input{border-color:var(--acc);color:var(--acc)}
+.bar{height:10px;background:var(--card2);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#d6336c,var(--acc));box-shadow:0 0 10px var(--acc)}
+#timer{position:fixed;left:12px;right:12px;bottom:68px;background:#0c0e11;color:#fff;border:2px solid var(--acc);border-radius:16px;padding:10px 14px;display:none;align-items:center;gap:12px;z-index:9;max-width:616px;margin:auto;box-shadow:0 0 28px rgba(255,92,157,.4)}
+#timer b{font:400 34px Impact,system-ui,sans-serif;color:var(--acc);font-variant-numeric:tabular-nums;letter-spacing:1px}
+.note{background:#2a1522;border-left:4px solid var(--acc);padding:10px 12px;border-radius:8px;font-size:13px;margin-top:8px;color:#f2d3e0;line-height:1.4}
+label.f{display:block;font-size:12px;color:var(--mute);margin-top:10px;text-transform:uppercase;letter-spacing:.5px}
+input.t,select.t,textarea.t{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:var(--card2);color:var(--ink)}
+.list-item{border-bottom:1px solid var(--line);padding:10px 0}.list-item:last-child{border:0}
+.stat{display:flex;gap:8px;margin:10px 0}.stat div{flex:1;background:var(--card2);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font:400 26px Impact,system-ui,sans-serif;color:var(--acc)}.stat span{font-size:11px;color:var(--mute);text-transform:uppercase}
+</style>
+</head>
+<body>
+<header><div class="row"><div class="sp"><h1>&#9825; Mena Fit</h1><small id="sub"></small></div><button class="sec" style="padding:8px 12px" onclick="setView('more')">&#9881;</button></div></header>
+<main id="app"></main>
+<div id="timer"><span>Recupero</span><b id="tt">0:00</b><span class="sp"></span><button class="sec" onclick="addT(15)">+15s</button><button class="warn" onclick="stopT()">Salta</button></div>
+<nav>
+<button data-v="home" class="on">Home</button>
+<button data-v="train">Allenati</button>
+<button data-v="plan">Scheda</button>
+<button data-v="body">Corpo</button>
+<button data-v="hist">Storico</button>
+</nav>
+
+<script>
+const IMG = "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/";
+const DEFAULT_PLAN = [
+ {id:"hip",name:"Hip thrust",img:"Barbell_Hip_Thrust",sets:4,reps:"8-12",rest:90,muscles:"Glutei",tip:"Il tuo esercizio chiave per glutei sodi. Schiena alta sulla panca, spingi coi talloni e a fine movimento stringi i glutei 1 secondo. Espira mentre sali."},
+ {id:"rdl",name:"Stacco rumeno",img:"Romanian_Deadlift",sets:3,reps:"10",rest:120,muscles:"Femorali, glutei, schiena",tip:"Ginocchia appena flesse, porta il bacino indietro e fai scendere il peso lungo le gambe con la schiena neutra."},
+ {id:"bench",name:"Panca piana con manubri",img:"Dumbbell_Bench_Press",sets:3,reps:"10",rest:90,muscles:"Petto, spalle, tricipiti",tip:"Scapole addotte, discesa controllata di 2-3 secondi, spingi espirando."},
+ {id:"lat",name:"Lat machine presa media",img:"Wide-Grip_Lat_Pulldown",sets:3,reps:"10-12",rest:90,muscles:"Dorsali, bicipiti",tip:"Tira la barra al petto portando i gomiti verso i fianchi, senza dondolare col busto."},
+ {id:"sumo",name:"Squat sumo con manubrio (o leg press piedi alti e larghi)",img:"Goblet_Squat",sets:3,reps:"10",rest:90,muscles:"Glutei, adduttori, quadricipiti",tip:"Piedi larghi con punte in fuori, manubrio al petto o tra le gambe. Carico moderato: non cercare il bruciore sui quadricipiti."},
+ {id:"curl",name:"Leg curl",img:"Lying_Leg_Curls",sets:3,reps:"12",rest:75,muscles:"Femorali",tip:"Sali veloce, scendi lenta in 2-3 secondi. Non staccare il bacino dalla panca."},
+ {id:"press",name:"Shoulder press con manubri",img:"Dumbbell_Shoulder_Press",sets:3,reps:"10",rest:90,muscles:"Spalle, tricipiti",tip:"Core contratto, non inarcare la zona lombare. Espira in spinta."},
+ {id:"row",name:"Rematore ai cavi",img:"Seated_Cable_Rows",sets:3,reps:"12",rest:75,muscles:"Schiena alta, bicipiti",tip:"Petto aperto, tira verso l'addome portando indietro le scapole."},
+ {id:"calf",name:"Calf raise (polpacci)",img:"Standing_Calf_Raises",sets:3,reps:"15",rest:45,muscles:"Polpacci",tip:"Sali bene sulle punte, pausa in alto e discesa lenta. Aiuta il ritorno venoso."},
+ {id:"plank",name:"Plank",img:"Plank",sets:3,reps:"30-40 sec",rest:30,muscles:"Core",tip:"Corpo in linea, glutei e addome contratti. Se senti il rigonfiamento a cupola sulla pancia, riduci o fermati."},
+ {id:"dead",name:"Dead bug",img:"Dead_Bug",sets:3,reps:"10",rest:30,muscles:"Core",tip:"Zona lombare aderente al pavimento, muovi braccio e gamba opposti lentamente espirando."}
+];
+const PHASES=[
+ {from:1,to:4,t:"Ripresa: 2-3 serie, carichi leggeri, ferma ogni serie con 3 ripetizioni di scorta."},
+ {from:5,to:8,t:"Costruzione: tutte le serie. Quando chiudi tutte le serie al massimo delle ripetizioni, aumenta il carico di circa il 5%."},
+ {from:9,to:99,t:"Progressione: sui multiarticolari (hip thrust, stacco, panca) puoi scendere a 6-8 ripetizioni con carichi piu' alti. Settimana leggera ogni 6-8."}
+];
+const K="allenamento_v1";
+let S=load();
+function load(){try{const s=JSON.parse(localStorage.getItem(K));if(s&&s.plan){s.body=s.body||[];return s}}catch(e){}return {plan:DEFAULT_PLAN,sessions:[],draft:null,body:[]}}
+function save(){localStorage.setItem(K,JSON.stringify(S))}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let view="home";
+function setView(v){view=v;document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x.dataset.v===v));render()}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+
+function weekNum(){
+  if(!S.sessions.length)return 1;
+  const first=new Date(S.sessions[0].date);
+  return Math.floor((Date.now()-first)/(7*864e5))+1;
+}
+function phase(w){return PHASES.find(p=>w>=p.from&&w<=p.to)}
+function lastLog(id){
+  for(let i=S.sessions.length-1;i>=0;i--){const l=S.sessions[i].logs[id];if(l&&l.some(x=>x.done))return l}
+  return null;
+}
+function imgs(e){return `<div class="imgs"><img loading="lazy" src="${IMG}${e.img}/0.jpg" alt="" onerror="this.style.visibility='hidden'"><img loading="lazy" src="${IMG}${e.img}/1.jpg" alt="" onerror="this.style.visibility='hidden'"></div>`}
+
+const QUOTES=["Un allenamento alla volta: la costanza batte l'intensità.","Il tuo corpo ha fatto qualcosa di straordinario. Ora prenditi cura di lui.","Non serve essere perfette, serve esserci.","Forte è il nuovo bello.","Ogni serie conta, anche quelle leggere.","Sei più forte di quanto pensi."];
+function greet(){const h=new Date().getHours();return h<12?"Buongiorno":h<18?"Buon pomeriggio":"Buonasera"}
+let MSG="";
+function render(){
+  $("#sub").textContent="Settimana "+weekNum()+" · "+S.sessions.length+(S.sessions.length===1?" allenamento fatto":" allenamenti fatti");
+  ({home:rHome,train:rTrain,plan:rPlan,body:rBody,hist:rHist,more:rMore})[view]();
+  window.scrollTo(0,0);
+}
+
+/* ---------- HOME ---------- */
+function rHome(){
+  const w=weekNum(),p=phase(w),last=S.sessions[S.sessions.length-1],wt=S.body.filter(b=>b.weight);
+  const wk=S.sessions.filter(s=>Date.now()-new Date(s.date)<7*864e5).length;
+  $("#app").innerHTML=`
+  <div class="card hero"><div class="mute">${greet()}, Mena</div><h2>Ciao Mena!</h2>
+   <div class="mute" style="font-style:italic;margin-bottom:8px">${QUOTES[new Date().getDate()%QUOTES.length]}</div>
+   <div class="stat"><div><b>${w}</b><span>settimana</span></div><div><b>${S.sessions.length}</b><span>allenamenti</span></div><div><b>${wt.length?wt[wt.length-1].weight:"-"}</b><span>kg oggi</span></div></div>
+   <button class="big ok" onclick="setView('train')">${S.draft?"Riprendi allenamento":"Vai all'allenamento"}</button></div>
+  <div class="card"><h3>Questa fase</h3><div class="note"><b>Settimana ${w}.</b> ${esc(p.t)}</div></div>
+  <div class="card"><div class="row"><h3 class="sp">Ultimo allenamento</h3></div>
+   ${last?`<div class="mute" style="margin-top:6px">${new Date(last.date).toLocaleDateString("it-IT",{weekday:"long",day:"numeric",month:"long"})} · ${last.min} min · ${Object.values(last.logs).flat().filter(x=>x.done).length} serie</div><div class="mute">${wk} ${wk===1?"allenamento":"allenamenti"} negli ultimi 7 giorni</div>`:`<div class="mute" style="margin-top:6px">Ancora nessun allenamento: inizia quando vuoi.</div>`}</div>
+  <div class="card"><div class="row"><h3 class="sp">Il tuo peso</h3><button class="sec" onclick="setView('body')">Aggiorna</button></div>
+   ${wt.length>1?lineChart(wt.map(b=>({d:b.date,v:+b.weight})),"kg"):`<div class="mute" style="margin-top:6px">Registra peso e misure nella scheda Corpo per vedere i progressi.</div>`}</div>`;
+}
+
+/* ---------- ALLENATI ---------- */
+function rTrain(){
+  const w=weekNum(),p=phase(w);
+  if(S.draft){return rWorkout()}
+  $("#app").innerHTML=`
+  <div class="card hero"><h2>Total Body</h2><div class="mute" style="font-style:italic;margin-bottom:6px">${QUOTES[new Date().getDate()%QUOTES.length]}</div>
+   <div class="stat"><div><b>90</b><span>minuti</span></div><div><b>${S.plan.length}</b><span>esercizi</span></div><div><b>${S.plan.reduce((a,e)=>a+e.sets,0)}</b><span>serie</span></div></div><div class="mute">17:30 - 19:00</div>
+   <div class="note"><b>Settimana ${w}.</b> ${esc(p.t)}</div>
+   <p><button class="big ok" onclick="startW()">Inizia allenamento</button></p></div>
+  <div class="card"><h3>Scheda di oggi</h3>
+   ${S.plan.map((e,i)=>`<div class="list-item"><b>${i+1}. ${esc(e.name)}</b><div class="mute">${e.sets} x ${esc(e.reps)} · rec. ${e.rest}s · ${esc(e.muscles)}</div></div>`).join("")}
+  </div>`;
+}
+function startW(){
+  S.draft={start:Date.now(),logs:{},idx:0};
+  S.plan.forEach(e=>{
+    const last=lastLog(e.id);
+    S.draft.logs[e.id]=Array.from({length:e.sets},(_,i)=>({kg:last&&last[i]?last[i].kg:(last&&last.length?last[last.length-1].kg:""),reps:last&&last[i]?last[i].reps:"",done:false}));
+  });
+  save();render();
+}
+function rWorkout(){
+  const d=S.draft,doneSets=Object.values(d.logs).flat().filter(x=>x.done).length,tot=Object.values(d.logs).flat().length;
+  $("#app").innerHTML=`
+  <div class="card"><div class="row"><b>In corso</b><span class="sp"></span><span class="mute">${doneSets}/${tot} serie</span></div>
+   <div class="bar" style="margin-top:8px"><i style="width:${tot?doneSets/tot*100:0}%"></i></div></div>
+  ${S.plan.map((e,i)=>{
+    const last=lastLog(e.id);
+    return `<div class="card"><div class="row"><span class="num">${i+1}</span><h3 class="sp">${esc(e.name)}</h3><span class="tag">${e.sets} x ${esc(e.reps)}</span></div>
+    <div class="mute">${esc(e.muscles)} · recupero ${e.rest}s</div>
+    ${imgs(e)}
+    <div class="note">${esc(e.tip)}</div>
+    ${last?`<div class="mute" style="margin-top:6px">Ultima volta: ${last.filter(x=>x.done).map(x=>(x.kg||"-")+"kg x "+(x.reps||"-")).join(" · ")}</div>`:""}
+    <div class="set mute"><span></span><span>Kg</span><span>Rip./sec</span><span></span></div>
+    ${d.logs[e.id].map((s,j)=>`<div class="set ${s.done?"done":""}"><span class="mute">${j+1}</span>
+      <input type="number" inputmode="decimal" step="0.5" placeholder="kg" value="${s.kg}" onchange="setV('${e.id}',${j},'kg',this.value)">
+      <input type="number" inputmode="numeric" placeholder="rip." value="${s.reps}" onchange="setV('${e.id}',${j},'reps',this.value)">
+      <button class="chk" onclick="toggle('${e.id}',${j},${e.rest})">${s.done?"✓":"○"}</button></div>`).join("")}
+    </div>`}).join("")}
+  <button class="big ok" onclick="finishW()">Termina e salva</button>
+  <p style="text-align:center"><button class="sec" onclick="cancelW()">Annulla allenamento</button></p>`;
+}
+function setV(id,j,k,v){S.draft.logs[id][j][k]=v;save()}
+function toggle(id,j,rest){
+  const s=S.draft.logs[id][j];s.done=!s.done;save();
+  const y=window.scrollY;render();window.scrollTo(0,y);
+  if(s.done)startT(rest);else stopT();
+}
+function finishW(){
+  const d=S.draft;
+  if(!Object.values(d.logs).flat().some(x=>x.done)&&!confirm("Nessuna serie completata. Salvare comunque?"))return;
+  S.sessions.push({date:new Date().toISOString(),week:weekNum(),min:Math.round((Date.now()-d.start)/60000),logs:d.logs});
+  MSG="Brava Mena! Allenamento completato: "+(S.sessions.length)+(S.sessions.length===1?" sessione":" sessioni")+" in archivio. Ti sei presa del tempo per te, e si vede.";S.draft=null;save();stopT();setView("hist");
+}
+function cancelW(){if(confirm("Annullare l'allenamento in corso? I dati inseriti andranno persi.")){S.draft=null;save();stopT();render()}}
+
+/* ---------- TIMER ---------- */
+let tInt=null,tEnd=0;
+function startT(sec){tEnd=Date.now()+sec*1000;$("#timer").style.display="flex";clearInterval(tInt);tick();tInt=setInterval(tick,250)}
+function addT(s){tEnd+=s*1000;tick()}
+function stopT(){clearInterval(tInt);$("#timer").style.display="none"}
+function tick(){
+  const r=Math.ceil((tEnd-Date.now())/1000);
+  if(r<=0){stopT();beep();if(navigator.vibrate)navigator.vibrate([300,100,300]);return}
+  $("#tt").textContent=Math.floor(r/60)+":"+String(r%60).padStart(2,"0");
+}
+function beep(){try{const c=new (window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=880;g.gain.value=.2;o.start();setTimeout(()=>{o.stop();c.close()},500)}catch(e){}}
+
+/* ---------- SCHEDA ---------- */
+function rPlan(){
+  $("#app").innerHTML=`<div class="card"><h2>La mia scheda</h2><div class="mute">Tocca "Modifica" per cambiare serie, ripetizioni e recuperi.</div></div>`+
+  S.plan.map((e,i)=>`<div class="card"><div class="row"><span class="num">${i+1}</span><h3 class="sp">${esc(e.name)}</h3><button class="sec" onclick="editEx(${i})">Modifica</button></div>
+   <div><span class="tag">${e.sets} x ${esc(e.reps)}</span><span class="tag">rec. ${e.rest}s</span><span class="tag">${esc(e.muscles)}</span></div>
+   ${imgs(e)}<div class="note">${esc(e.tip)}</div></div>`).join("");
+}
+function editEx(i){
+  const e=S.plan[i];
+  $("#app").innerHTML=`<div class="card"><h2>Modifica esercizio</h2>
+   <label class="f">Nome</label><input class="t" id="en" value="${esc(e.name)}">
+   <label class="f">Serie</label><input class="t" id="es" type="number" value="${e.sets}">
+   <label class="f">Ripetizioni</label><input class="t" id="er" value="${esc(e.reps)}">
+   <label class="f">Recupero (secondi)</label><input class="t" id="ec" type="number" value="${e.rest}">
+   <label class="f">Immagine (ID del database free-exercise-db, es. Leg_Press)</label><input class="t" id="ei" value="${esc(e.img)}">
+   <label class="f">Consigli</label><textarea class="t" id="et" rows="3">${esc(e.tip)}</textarea>
+   <p class="row"><button class="ok sp" onclick="saveEx(${i})">Salva</button><button class="sec" onclick="rPlan()">Annulla</button></p>
+   <p class="row"><button class="sec" onclick="mv(${i},-1)">Su</button><button class="sec" onclick="mv(${i},1)">Giu</button><span class="sp"></span><button class="warn" onclick="delEx(${i})">Elimina</button></p></div>`;
+}
+function saveEx(i){const e=S.plan[i];e.name=$("#en").value||e.name;e.sets=+$("#es").value||e.sets;e.reps=$("#er").value||e.reps;e.rest=+$("#ec").value||e.rest;e.img=$("#ei").value||e.img;e.tip=$("#et").value;save();rPlan()}
+function mv(i,d){const j=i+d;if(j<0||j>=S.plan.length)return;[S.plan[i],S.plan[j]]=[S.plan[j],S.plan[i]];save();editEx(j)}
+function delEx(i){if(confirm("Eliminare questo esercizio dalla scheda?")){S.plan.splice(i,1);save();rPlan()}}
+
+/* ---------- STORICO ---------- */
+function rHist(){
+  const ss=[...S.sessions].reverse();
+  let h=(MSG?`<div class="card hero"><h2>&#10084; Brava!</h2><div>${MSG}</div></div>`:"")+`<div class="card"><h2>Storico</h2><div class="mute">${S.sessions.length} ${S.sessions.length===1?"allenamento registrato":"allenamenti registrati"}</div></div>`;
+  if(!ss.length)h+=`<div class="card mute">Ancora nessun allenamento. Inizia dalla scheda "Oggi".</div>`;
+  else{
+    h+=`<div class="card"><h3>Progressione carichi</h3><div class="mute">Peso massimo per esercizio</div>${S.plan.map(e=>chartFor(e)).join("")}</div>`;
+    h+=ss.map((s,k)=>{
+      const idx=S.sessions.length-1-k,d=new Date(s.date);
+      const n=Object.values(s.logs).flat().filter(x=>x.done).length;
+      return `<div class="card"><div class="row"><b class="sp">${d.toLocaleDateString("it-IT",{weekday:"long",day:"numeric",month:"long"})}</b><span class="tag">Sett. ${s.week}</span></div>
+      <div class="mute">${s.min} min · ${n} serie</div>
+      ${S.plan.filter(e=>s.logs[e.id]&&s.logs[e.id].some(x=>x.done)).map(e=>`<div class="list-item"><b>${esc(e.name)}</b><div class="mute">${s.logs[e.id].filter(x=>x.done).map(x=>(x.kg||"-")+"kg x "+(x.reps||"-")).join(" · ")}</div></div>`).join("")}
+      <p><button class="sec" onclick="delS(${idx})">Elimina</button></p></div>`}).join("");
+  }
+  $("#app").innerHTML=h;
+}
+function chartFor(e){
+  const pts=S.sessions.map(s=>{const l=(s.logs[e.id]||[]).filter(x=>x.done&&+x.kg>0);return l.length?Math.max(...l.map(x=>+x.kg)):null}).filter(x=>x!==null);
+  if(!pts.length)return "";
+  const mx=Math.max(...pts),mn=Math.min(...pts),W=300,H=50;
+  const xy=pts.map((v,i)=>[pts.length===1?W/2:i*(W-10)/(pts.length-1)+5,H-5-((v-mn)/((mx-mn)||1))*(H-12)]);
+  return `<div class="list-item"><div class="row"><span class="sp">${esc(e.name)}</span><b>${pts[pts.length-1]} kg</b></div>
+  <svg viewBox="0 0 ${W} ${H}" width="100%" height="50"><polyline fill="none" stroke="#ff5c9d" stroke-width="2" points="${xy.map(p=>p.join(",")).join(" ")}"/>${xy.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#ffb347"/>`).join("")}</svg></div>`;
+}
+function delS(i){if(confirm("Eliminare questo allenamento dallo storico?")){S.sessions.splice(i,1);save();rHist()}}
+
+/* ---------- CORPO ---------- */
+const METRICS={weight:{n:"Peso",u:"kg"},waist:{n:"Vita",u:"cm"},hips:{n:"Fianchi",u:"cm"},thigh:{n:"Coscia",u:"cm"}};
+let bm="weight";
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const fd=d=>new Date(d+"T12:00:00").toLocaleDateString("it-IT",{day:"numeric",month:"short"});
+function lineChart(pts,u){
+  if(!pts.length)return "";
+  const W=320,H=130,pl=8,pr=8,pt=18,pb=22,vs=pts.map(p=>p.v),mx=Math.max(...vs),mn=Math.min(...vs),rg=(mx-mn)||1;
+  const xy=pts.map((p,i)=>[pts.length===1?W/2:pl+i*(W-pl-pr)/(pts.length-1),pt+(H-pt-pb)*(1-(p.v-mn)/rg)]);
+  const area=xy.length>1?`<polygon fill="rgba(255,92,157,.15)" points="${xy[0][0]},${H-pb} ${xy.map(p=>p.join(",")).join(" ")} ${xy[xy.length-1][0]},${H-pb}"/>`:"";
+  const lab=(i,anchor)=>`<text x="${xy[i][0]}" y="${xy[i][1]-7}" fill="#f2f4f7" font-size="11" font-weight="700" text-anchor="${anchor}">${pts[i].v}</text>`;
+  const first=pts[0],last=pts[pts.length-1],diff=Math.round((last.v-first.v)*10)/10;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="margin-top:8px">${area}<polyline fill="none" stroke="#ff5c9d" stroke-width="2.5" stroke-linejoin="round" points="${xy.map(p=>p.join(",")).join(" ")}"/>${xy.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#ffb347"/>`).join("")}${lab(0,pts.length>1?"start":"middle")}${pts.length>1?lab(pts.length-1,"end"):""}
+   <text x="${pl}" y="${H-5}" fill="#8d98a7" font-size="10">${fd(first.d)}</text><text x="${W-pr}" y="${H-5}" fill="#8d98a7" font-size="10" text-anchor="end">${fd(last.d)}</text></svg>
+   ${pts.length>1?`<div class="mute">Da ${first.v} a ${last.v} ${u}: <b style="color:var(--acc)">${diff>0?"+":""}${diff} ${u}</b></div>`:""}`;
+}
+function rBody(){
+  const m=METRICS[bm],pts=S.body.filter(b=>b[bm]).map(b=>({d:b.date,v:+b[bm]}));
+  $("#app").innerHTML=`
+  <div class="card hero"><h2>Il mio corpo</h2><div class="mute">Una volta a settimana, al mattino a digiuno, è la scelta migliore. Le misure raccontano spesso più della bilancia.</div></div>
+  <div class="card"><h3>Nuova misurazione</h3>
+   <label class="f">Data</label><input class="t" type="date" id="bd" value="${today()}">
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div><label class="f">Peso (kg)</label><input class="t" id="bw" type="number" inputmode="decimal" step="0.1" placeholder="54.0"></div>
+    <div><label class="f">Vita (cm)</label><input class="t" id="bwa" type="number" inputmode="decimal" step="0.5"></div>
+    <div><label class="f">Fianchi (cm)</label><input class="t" id="bh" type="number" inputmode="decimal" step="0.5"></div>
+    <div><label class="f">Coscia (cm)</label><input class="t" id="bt" type="number" inputmode="decimal" step="0.5"></div></div>
+   <p><button class="big ok" onclick="addBody()">Salva misurazione</button></p>
+   <div class="mute">Vita: nel punto più stretto sopra l'ombelico. Fianchi: nel punto più largo. Coscia: a metà tra inguine e ginocchio.</div></div>
+  <div class="card"><div class="row" style="flex-wrap:wrap">${Object.entries(METRICS).map(([k,v])=>`<button class="${k===bm?"":"sec"}" style="padding:8px 12px" onclick="bm='${k}';rBody()">${v.n}</button>`).join("")}</div>
+   <h3 style="margin-top:12px">${m.n} (${m.u})</h3>
+   ${pts.length?lineChart(pts,m.u):`<div class="mute" style="margin-top:6px">Nessun dato per ${m.n.toLowerCase()}.</div>`}</div>
+  <div class="card"><h3>Registro</h3>${S.body.length?[...S.body].map((b,i)=>[b,i]).sort((a,b)=>b[0].date.localeCompare(a[0].date)).map(([b,i])=>`<div class="list-item"><div class="row"><b class="sp">${fd(b.date)}</b><button class="sec" style="padding:6px 10px" onclick="delBody(${i})">Elimina</button></div>
+    <div class="mute">${[b.weight&&"Peso "+b.weight+" kg",b.waist&&"Vita "+b.waist+" cm",b.hips&&"Fianchi "+b.hips+" cm",b.thigh&&"Coscia "+b.thigh+" cm"].filter(Boolean).join(" · ")}</div></div>`).join(""):`<div class="mute" style="margin-top:6px">Ancora nessuna misurazione.</div>`}</div>`;
+}
+function addBody(){
+  const e={date:$("#bd").value||today(),weight:$("#bw").value,waist:$("#bwa").value,hips:$("#bh").value,thigh:$("#bt").value};
+  if(!(e.weight||e.waist||e.hips||e.thigh)){alert("Inserisci almeno un valore.");return}
+  S.body.push(e);S.body.sort((a,b)=>a.date.localeCompare(b.date));save();rBody();
+}
+function delBody(i){if(confirm("Eliminare questa misurazione?")){S.body.splice(i,1);save();rBody()}}
+
+/* ---------- ALTRO ---------- */
+function rMore(){MSG="";
+  $("#app").innerHTML=`<div class="card hero"><h2>Il profilo di Mena</h2><div class="mute" style="margin-top:6px">Obiettivo: tonificazione e ricomposizione corporea, con attenzione a glutei, femorali e core. Peso e misure le registri nella scheda Corpo.</div></div>
+  <div class="card"><h2>Per te</h2><ul class="mute" style="padding-left:18px;line-height:1.5">
+   <li><b>Proteine:</b> circa 85-90 g al giorno, distribuite sui pasti.</li>
+   <li><b>Energia:</b> nei giorni del ciclo in cui sei più stanca, scala i carichi del 10% o fai una serie in meno: non è un passo indietro.</li>
+   <li><b>Gambe gonfie:</b> sollevale 10-15 minuti la sera, cammina e bevi a sufficienza.</li>
+   <li><b>Quadricipiti:</b> la scheda privilegia glutei e femorali per riequilibrare.</li></ul></div>
+  <div class="card"><h2>Consigli</h2>
+   <ul class="mute" style="padding-left:18px;line-height:1.5">
+   <li>Esecuzione lenta (2-3 secondi in discesa), espira durante lo sforzo.</li>
+   <li>Niente serie a esaurimento sulle gambe.</li>
+   <li>Funzionale a 48 ore di distanza dalla sala pesi.</li>
+   <li>Rigonfiamento a cupola sull'addome, perdite o pesantezza pelvica: riduci il carico e senti una fisioterapista del pavimento pelvico.</li>
+   <li>Gonfiore su una gamba sola, dolore al polpaccio o gonfiore a riposo: senti il medico.</li></ul></div>
+  <div class="card"><h2>Copia di sicurezza</h2><div class="mute">I dati stanno solo in questo dispositivo. Salva ogni tanto un backup.</div>
+   <p class="row"><button class="sp" onclick="exp()">Scarica backup</button><button class="sec sp" onclick="$('#imp').click()">Ripristina</button></p>
+   <input type="file" id="imp" accept="application/json" style="display:none" onchange="imp(this.files[0])">
+   <p><button class="warn" onclick="resetAll()">Cancella tutto</button></p></div>`;
+}
+function exp(){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="allenamento-backup.json";a.click()}
+function imp(f){if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);if(!s.plan||!s.sessions)throw 0;s.body=s.body||[];S=s;save();alert("Backup ripristinato.");render()}catch(e){alert("File non valido.")}};r.readAsText(f)}
+function resetAll(){if(confirm("Cancellare scheda, storico e tutti i dati? Non si può annullare.")){S={plan:DEFAULT_PLAN,sessions:[],draft:null,body:[]};save();render()}}
+
+render();
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script>
+</body>
+</html>
